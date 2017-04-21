@@ -17,42 +17,61 @@
         font-size: 12px;
       }
       h1 {
-        color: #525454;
+        color: white;
         font-size: 22px;
         margin: 0 0 10px 0;
         text-align: center;
       }
+      .highlight{
+      	color: #9400D3;
+      }
+
+      .buttons {
+		text-align: center;
+      }
+
       #hide-listings,
       #show-listings {
-        width: 48%;
+        width: 20%;
+
       }
+
       #map {
         bottom:0px;
         height: 100%;
-        left: 362px;
-        position: absolute;
+        top: ;
+        position: ;
         right: 0px;
       }
       .options-box {
-        background: #fff;
+        background: black;
         border: 1px solid #999;
         border-radius: 3px;
-        height: 100%;
+        height: 60px;
         line-height: 35px;
         padding: 10px 10px 30px 10px;
         text-align: left;
-        width: 340px;
+        width: 100%;
+
       }
+
+            #pano {
+        width: 200px;
+        height: 200px;
+      }
+      .text {
+        font-size: 12px;
+
     </style>
   </head>
   <body>
     <div class="container">
       <div class="options-box">
-        <h1>Sacramento Sight Seeing</h1>
-        <div>
+               <h1><span class="highlight">Sacramento</span> Sight Seeing</h1>
+        <p class = "buttons">
           <input id="show-listings" type="button" value="Show Listings">
           <input id="hide-listings" type="button" value="Hide Listings">
-        </div>
+        </p>
       </div>
       <div id="map"></div>
     </div>
@@ -294,19 +313,47 @@
         document.getElementById('show-listings').addEventListener('click', showListings);
         document.getElementById('hide-listings').addEventListener('click', hideListings);
       }
-      // This function populates the infowindow when the marker is clicked. We'll only allow
-      // one infowindow which will open at the marker that is clicked, and populate based
-      // on that markers position.
+
       function populateInfoWindow(marker, infowindow) {
         // Check to make sure the infowindow is not already opened on this marker.
         if (infowindow.marker != marker) {
+          // Clear the infowindow content to give the streetview time to load.
+          infowindow.setContent('');
           infowindow.marker = marker;
-          infowindow.setContent('<div>' + marker.title + '</div>');
-          infowindow.open(map, marker);
           // Make sure the marker property is cleared if the infowindow is closed.
           infowindow.addListener('closeclick', function() {
             infowindow.marker = null;
           });
+          var streetViewService = new google.maps.StreetViewService();
+          var radius = 50;
+          // In case the status is OK, which means the pano was found, compute the
+          // position of the streetview image, then calculate the heading, then get a
+          // panorama from that and set the options
+          function getStreetView(data, status) {
+            if (status == google.maps.StreetViewStatus.OK) {
+              var nearStreetViewLocation = data.location.latLng;
+              var heading = google.maps.geometry.spherical.computeHeading(
+                nearStreetViewLocation, marker.position);
+                infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
+                var panoramaOptions = {
+                  position: nearStreetViewLocation,
+                  pov: {
+                    heading: heading,
+                    pitch: 30
+                  }
+                };
+              var panorama = new google.maps.StreetViewPanorama(
+                document.getElementById('pano'), panoramaOptions);
+            } else {
+              infowindow.setContent('<div>' + marker.title + '</div>' +
+                '<div>No Street View Found</div>');
+            }
+          }
+          // Use streetview service to get the closest streetview image within
+          // 50 meters of the markers position
+          streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+          // Open the infowindow on the correct marker.
+          infowindow.open(map, marker);
         }
       }
       // This function will loop through the markers array and display them all.
@@ -338,8 +385,6 @@
           new google.maps.Size(21,34));
         return markerImage;
       }
-
-
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsWN0oAgLIi3AVDv-aHgnabRQnwsq2oGo&callback=initMap"
     async defer></script>
