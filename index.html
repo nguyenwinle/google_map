@@ -135,12 +135,25 @@
 <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
     </div>
     <script>
-      var map;
-      // Create a new blank array for all the listing markers.
-      var markers = [];
-      function initMap() {
-        // Create a styles array to use with the map.
-        var styles = [
+function openNav() {
+    document.getElementById("mySidenav").style.width = "300px";
+    document.getElementById("main").style.marginLeft = "300px";
+}
+
+/* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+}
+
+var model = [{title: 'The Park Ultra Lounge', location: {lat: 38.5769132, lng: -121.4887935}},
+          {title: 'The Mix', location: {lat: 38.5761951, lng: -121.4874034}},
+          {title: 'Social Night Club', location: {lat: 38.5788195, lng: -121.4959622}},
+          {title: 'District 30', location: {lat: 38.5787285, lng: -121.4953774}},
+          {title: 'The Pier Lounge', location: {lat: 38.5825062, lng: -121.5028397}}
+        ];
+
+ var styles = [
   {
     "elementType": "geometry",
     "stylers": [
@@ -318,7 +331,32 @@
     ]
   }
 ];
-        // Constructor creates a new map - only center and zoom are required.
+
+//Object constructor.
+var viewModel = function () {
+    var self = this;
+
+    this.locationList=ko.observableArray([]);
+    model.forEach(function(locationsItem){
+        //console.log(locationsItem);
+        self.locationList.push(new Location(locationsItem));
+    });
+}
+
+var Location = function (data) {
+    this.title=ko.observable(data.title);
+    };
+
+
+ko.applyBindings(new viewModel());
+
+
+
+
+var map;
+      // Create a new blank array for all the listing markers.
+      var markers = [];
+      function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 38.5816, lng: -121.4944},
           zoom: 13,
@@ -327,13 +365,6 @@
         });
         // These are the real estate listings that will be shown to the user.
         // Normally we'd have these in a database instead.
-        var locations = [
-          {title: 'The Park Ultra Lounge', location: {lat: 38.5769132, lng: -121.4887935}},
-          {title: 'The Mix', location: {lat: 38.5761951, lng: -121.4874034}},
-          {title: 'Social Night Club', location: {lat: 38.5788195, lng: -121.4959622}},
-          {title: 'District 30', location: {lat: 38.5787285, lng: -121.4953774}},
-          {title: 'The Pier Lounge', location: {lat: 38.5825062, lng: -121.5028397}}
-        ];
         var largeInfowindow = new google.maps.InfoWindow();
         // Style the markers a bit. This will be our listing marker icon.
         var defaultIcon = makeMarkerIcon('9400D3');
@@ -342,10 +373,10 @@
         var highlightedIcon = makeMarkerIcon('FFFFFF');
         var largeInfowindow = new google.maps.InfoWindow();
         // The following group uses the location array to create an array of markers on initialize.
-        for (var i = 0; i < locations.length; i++) {
+        for (var i = 0; i < model.length; i++) {
           // Get the position from the location array.
-          var position = locations[i].location;
-          var title = locations[i].title;
+          var position = model[i].location;
+          var title = model[i].title;
           // Create a marker per location, and put into markers array.
           var marker = new google.maps.Marker({
             position: position,
@@ -444,12 +475,6 @@
           new google.maps.Size(21,34));
         return markerImage;
       }
-    </script>
-<script>
-	function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("main").style.marginLeft = "0";
-}
 	  </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsWN0oAgLIi3AVDv-aHgnabRQnwsq2oGo&callback=initMap"
     async defer></script>
