@@ -1,0 +1,103 @@
+      html,
+      body {
+        font-family: Arial, sans-serif;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        color: gray;
+      }
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+ #hide-listings,
+ #show-listings {
+        width: 48%;
+      }
+
+      .container {
+        height: 100%;
+        position: relative;
+      }
+      input {
+        font-size: 12px;
+      }
+      h1 {
+        color: white;
+        font-size: 22px;
+        margin: 0 0 10px 0;
+        text-align: center;
+        padding-top: 32px;
+      }
+
+      .highlight{
+      	color: #9400D3;
+      }
+
+      .buttons {
+		text-align: center;
+      }
+
+    #map {
+        bottom:0px;
+        height: 100%;
+        top: ;
+        position: ;
+        right: 0px;
+      }
+
+      #pano {
+        width: 200px;
+        height: 200px;
+      }
+
+      .text {
+        font-size: 12px;
+}
+
+input[type="text"]{
+  padding: 4px;
+  height: 25px;
+  width: 100%;
+
+} 
+
+ul
+{
+list-style-type: none;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
