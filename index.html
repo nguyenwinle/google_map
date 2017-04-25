@@ -16,24 +16,24 @@
 
 <body>
 
+
+<span style="font-size:30px;cursor:pointer" onclick="openNav()" class="highlight">&#9776; Sacramento</span>
+<span  style="font-size:30px" class="heading"> in the Night</span>
+
+
 <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  
-<h1><span class="highlight">Sacramento</span> Night Life</h1>
  
- <p class = "buttons">
-          <input id="show-listings" type="button" value="Show All">
-          <input id="hide-listings" type="button" value="Hide All">
-  </p>
- <input type="text" placeholder="Enter place" data-bind="">
 
+ <input type="text" placeholder="Enter place" data-bind="">
+<br>
+<br>
  <ul data-bind="foreach:locationList">
-        <li data-bind="text:title, click: openInfoWindow"><li>
-     </ul>
+        <li data-bind="text:title, click: populateInfoWindow"><li>
+ 
+  </ul>
 
 </div>
-
-<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
 
   <div id="map"></div>
 
