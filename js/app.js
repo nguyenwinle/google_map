@@ -334,7 +334,14 @@ var viewModel = function () {
         }
       }
 
-            function initMap() {
+ var map;
+
+// Create a new blank array for all the listing markers.
+var markers = [];
+
+var initMap = function() {
+    
+    //Create a new map 
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 38.5816, lng: -121.4944},
           zoom: 13,
@@ -342,22 +349,19 @@ var viewModel = function () {
           mapTypeControl: false
         });
 
-        var largeInfowindow = new google.maps.InfoWindow();
-
-          // Style the markers a bit. This will be our listing marker icon.
         var defaultIcon = makeMarkerIcon('9400D3');
         // Create a "highlighted location" marker color for when the user
         // mouses over the marker.
         var highlightedIcon = makeMarkerIcon('FFFFFF');
-        var largeInfowindow = new google.maps.InfoWindow();
 
-        var bounds = new google.maps.LatLngBounds();
-        // The following group uses the location array to create an array of markers on initialize.
-        for (var i = 0; i < model.length; i++) {
-          // Get the position from the location array.
-          var position = model[i].location;
-          var title = model[i].title;
-          // Create a marker per location, and put into markers array.
+    var largeInfowindow = new google.maps.InfoWindow();
+    // The following group uses the location array to create an array of markers on initialize.
+    for (var i = 0; i < vm.filteredLocations().length; i++) {
+        // Get the position from the location array.
+        var position = vm.filteredLocations()[i].location;
+        var title = vm.filteredLocations()[i].title;
+        console.log(vm.filteredLocations()[i].address);
+        // Create a marker per location, and put into markers array.
           var marker = new google.maps.Marker({
             map: map,
             position: position,
@@ -366,25 +370,42 @@ var viewModel = function () {
             icon: defaultIcon,
             id: i
           });
-          // Push the marker to our array of markers.
-          markers.push(marker);
-          // Create an onclick event to open an infowindow at each marker.
-          marker.addListener('click', function() {
-            populateInfoWindow(this, largeInfowindow);
-            console.log("it works");
-          });
+        vm.filteredLocations()[i].marker = marker;
 
-          marker.addListener('mouseover', function() {
+
+        marker.addListener('mouseover', function() {
             this.setIcon(highlightedIcon);
           });
           marker.addListener('mouseout', function() {
             this.setIcon(defaultIcon);
           });
+        // Push the marker to our array of markers.
+        //markers.push(marker);
+        // Create an onclick event to open an infowindow at each marker.
+        marker.addListener('click', function() {
+            //Add functionaility to animate markers
+            var self = this;
+            self.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function () {
+                self.setAnimation(null);
+            }, 1400);
+            populateInfoWindow(this, largeInfowindow);
+        });
 
-          bounds.extend(markers[i].position);
-        }
-        // Extend the boundaries of the map for each marker
-        map.fitBounds(bounds);
+    }
+}
+
+
+          function makeMarkerIcon(markerColor) {
+
+        var markerImage = new google.maps.MarkerImage(
+          'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+          '|40|_|%E2%80%A2',
+          new google.maps.Size(21, 34),
+          new google.maps.Point(0, 0),
+          new google.maps.Point(10, 34),
+          new google.maps.Size(21,34));
+        return markerImage;
       }
 
 
