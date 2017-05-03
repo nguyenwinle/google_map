@@ -469,9 +469,7 @@ function populateInfoWindow(marker, infowindow) {
                 v: '20170502'
             }
          }).done(function (data) {
-            console.log(data); 
-             // If incoming data has a venues object set the first one to the var venue
-      
+            console.log(data);
       var rating = data.response.venue.rating;
       var name =  data.response.venue.name;
       var location = data.response.venue.location.address;
