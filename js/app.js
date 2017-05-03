@@ -458,13 +458,9 @@ function populateInfoWindow(marker, infowindow) {
             infowindow.marker = null;
           });
 
-
-        var location; 
-        var venue;
-
         $.ajax({
+            dataType: 'json',
             url:'https://api.foursquare.com/v2/venues/search',
-            dataType: 'jsonp',
             data:   {
                 ll: '38.5816, -121.4944',
                 query: marker.title,
@@ -472,18 +468,16 @@ function populateInfoWindow(marker, infowindow) {
                 client_secret: '0NPX4QW5S24TRLLQNAPGLW5GGA5MYNCOG351AMYBCIBVLSAS',
                 v: '20170502'
             }
-         }).done(function (data) { 
+         }).done(function (data) {
+            console.log(data); 
              // If incoming data has a venues object set the first one to the var venue
-             venue = data.response.hasOwnProperty("venues") ? data.response.venues[0] : '';
+      
+      var rating = data.response.venue.rating;
+      var name =  data.response.venue.name;
+      var location = data.response.venue.location.address;
+        var contact = data.response.venue.contact[1];
 
-             // If the new venue has a property called location set that to the variable location
-             location = venue.hasOwnProperty('location') ? venue.location : '';
-             // If new location has prop address then set the observable address to that or blank
-             if (location.hasOwnProperty('address')) {
-                 var address = location.address || '';
-             }
-
-            infowindow.setContent('<div>' + marker.title + '</div>' + address +'</div>');
+            infowindow.setContent('<div>' + marker.title + '<br>' + address + '<br>' + rating.toString() + '<br>' + location + '<br>' + contact + '</div>');
 
          }).fail(function (e) {
              infowindow.setContent('<h5>Foursquare data is not available.</h5>');
@@ -568,7 +562,6 @@ function makeMarkerIcon(markerColor) {
 
 var viewModel = new ViewModel();
 ko.applyBindings(viewModel);
-
 
 
 
