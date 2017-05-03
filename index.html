@@ -6,9 +6,9 @@
     <!-- Latest compiled and minified CSS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link href='https://fonts.googleapis.com/css?family=Bitter:700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
 </head>
@@ -24,13 +24,13 @@
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
  
 
- <input type="text" placeholder="Enter place" data-bind="">
+ <input type="text" placeholder="Enter place" data-bind="textInput: search">
 <br>
 <br>
- <ul data-bind="foreach:locationList">
-        <li data-bind="text:title, click: populateInfoWindow"><li>
- 
-  </ul>
+ <div data-bind="foreach: locationList">
+
+<button type="button" class="list-group-item list-group-item-action" data-bind="text: title, click: $parent.showInfo, visible: show"></button>
+      </div>
 
 </div>
 
@@ -38,10 +38,9 @@
 
 
       <script src="js/app.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsWN0oAgLIi3AVDv-aHgnabRQnwsq2oGo&callback=initMap"
     async defer></script>
 
     </body>
 </html>
-
