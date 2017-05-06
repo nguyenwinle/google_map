@@ -404,6 +404,9 @@ var Location = function(data) {
     self.title = data.title;
     self.location = data.location;
     self.show = ko.observable(true);
+    self.rating = data.rating;
+    self.contact = data.contact;
+
 };
 
 //View Model
@@ -447,7 +450,6 @@ var ViewModel = function() {
 };
        
 
-// This function populates the infowindow when the marker is clicked. 
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
@@ -457,36 +459,37 @@ function populateInfoWindow(marker, infowindow) {
           infowindow.addListener('closeclick', function() {
             infowindow.marker = null;
           });
+    infowindow.open(map, marker);
 
-        $.ajax({
-            dataType: 'json',
-            url:'https://api.foursquare.com/v2/venues/search',
-            data:   {
-                ll: '38.5816, -121.4944',
-                query: marker.title,
-                client_id: 'XAJ3SDOMVGLVKSACBTU3O4XN31HVOYEQIY4QGABJPXCURHRO',
-                client_secret: '0NPX4QW5S24TRLLQNAPGLW5GGA5MYNCOG351AMYBCIBVLSAS',
-                v: '20170502'
-            }
-         }).done(function (data) {
-            console.log(data);
+    var ID = 'XAJ3SDOMVGLVKSACBTU3O4XN31HVOYEQIY4QGABJPXCURHRO';
+    var secret = '0NPX4QW5S24TRLLQNAPGLW5GGA5MYNCOG351AMYBCIBVLSAS';
+    var query = 'nightlife';
+    var version = '20170504';
+    var fourSquare = 'https://api.foursquare.com/v2/venues/search';
+    var ll = '38.5816,-121.4944';
+    var url = fourSquare + '?client_id=' + ID + '&client_secret=' + secret + '&ll=' + ll + '&query=' + query + '&v=' + version + '&m=foursquare';
+
+            $.ajax({
+            dataType: 'jsonp',
+            url: url,
+            success: function(data) {
+                console.log(data);
       var rating = data.response.venue.rating;
       var name =  data.response.venue.name;
       var location = data.response.venue.location.address;
         var contact = data.response.venue.contact[1];
 
-            infowindow.setContent('<div>' + marker.title + '<br>' + address + '<br>' + rating.toString() + '<br>' + location + '<br>' + contact + '</div>');
+           infowindow.setContent('<div>' + name + '<br>' + address + '<br>' + rating.toString() + '<br>' + location + '<br>' + contact + '</div>');
 
-         }).fail(function (e) {
-             infowindow.setContent('<h5>Foursquare data is not available.</h5>');
-             self.showMessage(true);
-         });
+         }
+            });
 
-        infowindow.open(map, marker);
         
-    }
-}
 
+  }
+
+
+}  
 
 var initMap = function() {
     
@@ -560,6 +563,7 @@ function makeMarkerIcon(markerColor) {
 
 var viewModel = new ViewModel();
 ko.applyBindings(viewModel);
+
 
 
 
