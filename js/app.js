@@ -474,12 +474,8 @@ function populateInfoWindow(marker, infowindow) {
             url: url,
             success: function(data) {
                 console.log(data);
-      var rating = data.response.venue.rating;
-      var name =  data.response.venue.name;
-      var location = data.response.venue.location.address;
-        var contact = data.response.venue.contact[1];
 
-           infowindow.setContent('<div>' + name + '<br>' + address + '<br>' + rating.toString() + '<br>' + location + '<br>' + contact + '</div>');
+           infowindow.setContent('<div>' + marker.title + '</div>');
 
          }
             });
@@ -563,7 +559,5 @@ function makeMarkerIcon(markerColor) {
 
 var viewModel = new ViewModel();
 ko.applyBindings(viewModel);
-
-
 
 
