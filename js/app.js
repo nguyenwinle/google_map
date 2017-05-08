@@ -1,4 +1,4 @@
-var styles = [{
+ var styles = [{
          "elementType": "geometry",
          "stylers": [{
              "color": "#212121"
@@ -184,10 +184,7 @@ var styles = [{
      var self = this;
      self.title = data.title;
      self.location = data.location;
-     self.show = ko.observable(true);
-     self.rating = data.rating;
-     self.contact = data.contact;
-
+     self.showLocation = ko.observable();
  };
 
  //View Model
@@ -209,12 +206,12 @@ var styles = [{
          var loc = self.locationList();
          for (var i = 0; i < loc.length; i++) {
              if (loc[i].title.toLowerCase().indexOf(value) >= 0) {
-                 loc[i].show(true);
+                 loc[i].showLocation(true);
                  if (loc[i].marker) {
                      loc[i].marker.setVisible(true);
                  }
              } else {
-                 loc[i].show(false);
+                 loc[i].showLocation(false);
                  if (loc[i].marker) {
                      loc[i].marker.setVisible(false);
                  }
@@ -294,14 +291,6 @@ var styles = [{
 
 
          }).fail(function(e) {
-             if (fb == undefined) {
-                 infowindow.setContent('<p>unable to locate Facebook!</p>');
-             }
-
-             if (tweet == undefined) {
-                 infowindow.setContent('<p>unable to locate Twitter!</p>');
-             }
-
              infowindow.setContent('<h5>Foursquare data is not available.</h5>');
 
          });
