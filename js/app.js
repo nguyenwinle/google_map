@@ -285,9 +285,9 @@
                  var address = location.address || '';
              }
 
-             infowindow.setContent('<div>' + '<a href="' + website + '" target="_blank">' + marker.title + '</a>' + '</div>' + '<p>' + address + '<br>' + phone +
-                 '<br>' + '<a href="www.facebook.com/' + fb + '" target="_blank"><i class="fa fa-facebook-square fa-3x" aria-hidden="true"></i></a>' + '<br>' +
-                 '<a href=' + '"www.twitter.com/' + tweet + '" target="_blank"><i class="fa fa-twitter-square fa-3x" aria-hidden="true"></i></a>' + '</p>');
+             infowindow.setContent('<div>' + '<center><h3>' + '<a href="' + website + '" target="_blank">' + marker.title + '</a>' + '</h3></center>' + '<p>' + 'Address: ' + address + '<br>' + 'Phone: ' + phone +
+                 '<br><center>' + '<a href="www.facebook.com/' + fb + '" target="_blank"><i class="fa fa-facebook fa-2x" aria-hidden="true"></i></a>' + ' ' +
+                 '<a href=' + '"www.twitter.com/' + tweet + '" target="_blank"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a></center>' + '</p>' + '</div>');
 
 
          }).fail(function(e) {
