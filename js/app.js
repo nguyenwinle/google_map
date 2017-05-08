@@ -459,34 +459,54 @@ function populateInfoWindow(marker, infowindow) {
           infowindow.addListener('closeclick', function() {
             infowindow.marker = null;
           });
+
     infowindow.open(map, marker);
 
-    var ID = 'XAJ3SDOMVGLVKSACBTU3O4XN31HVOYEQIY4QGABJPXCURHRO';
-    var secret = '0NPX4QW5S24TRLLQNAPGLW5GGA5MYNCOG351AMYBCIBVLSAS';
-    var query = 'nightlife';
-    var version = '20170504';
-    var fourSquare = 'https://api.foursquare.com/v2/venues/search';
-    var ll = '38.5816,-121.4944';
-    var url = fourSquare + '?client_id=' + ID + '&client_secret=' + secret + '&ll=' + ll + '&query=' + query + '&v=' + version + '&m=foursquare';
+      var location;     
+      var venue; 
+      var website;
+      var fb;
+      var tweet;  
+  
+          $.ajax({              
+            dataType: 'json',
+              url:'https://api.foursquare.com/v2/venues/search',              
+           dataType: 'jsonp',
+           async: true,   
+              data:   {                 
+                  ll: '38.5816, -121.4944',                     
+                  query: marker.title,                     
+                  client_id: 'XAJ3SDOMVGLVKSACBTU3O4XN31HVOYEQIY4QGABJPXCURHRO',                    
+                  client_secret: '0NPX4QW5S24TRLLQNAPGLW5GGA5MYNCOG351AMYBCIBVLSAS',                      
+                  v: '20170502'                  
+              }                
+         }).done(function (data) {    
+               // If incoming data has a venues object set the first one to the var venue                
+          venue = data.response.hasOwnProperty("venues") ? data.response.venues[0] : '';       
+  
+          contact  = venue.hasOwnProperty("contact") ? venue.contact : '';
 
-            $.ajax({
-            dataType: 'jsonp',
-            url: url,
-            success: function(data) {
-                console.log(data);
+          if (contact.hasOwnProperty('formattedPhone')) {
+              var phone = contact.formattedPhone || '';
+          }
+           // If the new venue has a property called location set that to the variable location         
+           location = venue.hasOwnProperty('location') ? venue.location : '';   
+            // If new location has prop address then set the observable address to that or blank   
+        if (location.hasOwnProperty('address')) {    
+               var address = location.address || '';    
+           }    
 
-           infowindow.setContent('<div>' + marker.title + '</div>');
+           infowindow.setContent('<div>' + marker.title + '</div>' + '<p>' + address + '<br>' + phone + '</p>' + 
+            '<a href="' + website + '" target="_blank">' + '</a>' + '<a href="' + 'www.facebook.com/' + facebook + '" target="_blank">' + '</a>' +
+            '<a href="' + 'www.twitter.com/' + twitter + '" target="_blank">' + '</a>');   
 
-         }
+           }).fail(function (e) {             
+               infowindow.setContent('<h5>Foursquare data is not available.</h5>');
+
             });
 
-        
-
-  }
-
-
-}  
-
+}
+}
 var initMap = function() {
     
     //Create a new map 
@@ -559,5 +579,3 @@ function makeMarkerIcon(markerColor) {
 
 var viewModel = new ViewModel();
 ko.applyBindings(viewModel);
-
-
