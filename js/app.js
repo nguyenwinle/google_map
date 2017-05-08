@@ -465,17 +465,14 @@ function populateInfoWindow(marker, infowindow) {
       var location;     
       var venue; 
       var website;
-      var fb;
-      var tweet;  
+ 
   
           $.ajax({              
-            dataType: 'json',
-              url:'https://api.foursquare.com/v2/venues/search',              
+           url:'https://api.foursquare.com/v2/venues/search',              
            dataType: 'jsonp',
            async: true,   
               data:   {                 
-                  ll: '38.5816, -121.4944',                     
-                  query: marker.title,                     
+                  ll: '38.5816, -121.4944',                                          
                   client_id: 'XAJ3SDOMVGLVKSACBTU3O4XN31HVOYEQIY4QGABJPXCURHRO',                    
                   client_secret: '0NPX4QW5S24TRLLQNAPGLW5GGA5MYNCOG351AMYBCIBVLSAS',                      
                   v: '20170502'                  
@@ -486,9 +483,20 @@ function populateInfoWindow(marker, infowindow) {
   
           contact  = venue.hasOwnProperty("contact") ? venue.contact : '';
 
+          website =  venue.hasOwnProperty("url") ? venue.url : '';
+
           if (contact.hasOwnProperty('formattedPhone')) {
               var phone = contact.formattedPhone || '';
           }
+
+          if (contact.hasOwnProperty('twitter')) {
+              var tweet = contact.twitter || '';
+          }
+
+          if (contact.hasOwnProperty('facebookUsername')) {
+              var fb = contact.facebookUsername || '';
+          }
+
            // If the new venue has a property called location set that to the variable location         
            location = venue.hasOwnProperty('location') ? venue.location : '';   
             // If new location has prop address then set the observable address to that or blank   
@@ -496,9 +504,10 @@ function populateInfoWindow(marker, infowindow) {
                var address = location.address || '';    
            }    
 
-           infowindow.setContent('<div>' + marker.title + '</div>' + '<p>' + address + '<br>' + phone + '</p>' + 
-            '<a href="' + website + '" target="_blank">' + '</a>' + '<a href="' + 'www.facebook.com/' + facebook + '" target="_blank">' + '</a>' +
-            '<a href="' + 'www.twitter.com/' + twitter + '" target="_blank">' + '</a>');   
+           infowindow.setContent('<div>' + '<a href="' + website + '" target="_blank">' + marker.title + '</a>' + tweet + '</div>' + '<p>' + address + '<br>' + phone  + 
+            '<br>' + '<a href="www.facebook.com/' + fb + '" target="blank"><i class="fa fa-facebook-square fa-3x" aria-hidden="true"></i></a>' + '<br>' +
+            '<a href="www.twitter.com/' + tweet + '" target="blank"><i class="fa fa-twitter-square fa-3x" aria-hidden="true"></i></a>' + '</p>');   
+
 
            }).fail(function (e) {             
                infowindow.setContent('<h5>Foursquare data is not available.</h5>');
