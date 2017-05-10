@@ -230,13 +230,13 @@
  // sidebar
  function openNav() {
      document.getElementById("mySidenav").style.width = "300px";
-     document.getElementById("main").style.marginLeft = "300px";
+   //  document.getElementById("main").style.marginLeft = "300px";
  }
 
  /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
  function closeNav() {
      document.getElementById("mySidenav").style.width = "0";
-     document.getElementById("main").style.marginLeft = "0";
+     //document.getElementById("main").style.marginLeft = "0";
  }
 
  function populateInfoWindow(marker, infowindow) {
@@ -263,34 +263,36 @@
              }
 
          }).success(function(data) {
-             // If incoming data has a venues object set the first one to the var venue                
+             // If data has a venues object set the first one to the var venue                
              var venue = data.response.hasOwnProperty("venues") ? data.response.venues[0] : '';
+             //if data has a url property, set it to var website
              var website = venue.hasOwnProperty("url") ? venue.url : '';
+             //if data has a contact property, set it to var contact
              var contact = venue.hasOwnProperty("contact") ? venue.contact : '';
+             //if data has a location property, set it to var loocation
              var location = venue.hasOwnProperty('location') ? venue.location : '';
-
+             //if contact has property formattedPhone, set it to var phone
              if (contact.hasOwnProperty('formattedPhone')) {
                  var phone = contact.formattedPhone || '';
              }
-
+             //if contact has property twitter, set it to var tweet
              if (contact.hasOwnProperty('twitter')) {
                  var tweet = contact.twitter || '';
              }
-
+            //if contact has property facebookUsername, set it to var fb
              if (contact.hasOwnProperty('facebookUsername')) {
                  var fb = contact.facebookUsername || '';
              }
-
+            //if location has a property of address, set it to var address
              if (location.hasOwnProperty('address')) {
                  var address = location.address || '';
              }
 
              infowindow.setContent('<div>' + '<center><h3>' + '<a href="' + website + '" target="_blank">' + marker.title + '</a>' + '</h3></center>' + '<p>' + 'Address: ' + address + '<br>' + 'Phone: ' + phone +
-                 '<br><center>' + '<a href="www.facebook.com/' + fb + '" target="_blank"><i class="fa fa-facebook fa-2x" aria-hidden="true"></i></a>' + ' ' +
-                 '<a href=' + '"www.twitter.com/' + tweet + '" target="_blank"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a></center>' + '</p>' + '</div>');
-
+                 '<br><center>Social Media: ' + '<br>' + 'www.twitter.com/' + tweet + '<br>' + 'www.facebook.com/' + fb  + '</center></p>' + '</div>');
 
          }).fail(function(e) {
+            //if data not, find set the content to show error message
              infowindow.setContent('<h5>Foursquare data is not available.</h5>');
 
          });
