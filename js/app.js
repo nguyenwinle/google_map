@@ -1,4 +1,5 @@
- var styles = [{
+// list of array to style map
+var styles = [{
          "elementType": "geometry",
          "stylers": [{
              "color": "#212121"
@@ -207,14 +208,9 @@
          for (var i = 0; i < loc.length; i++) {
              if (loc[i].title.toLowerCase().indexOf(value) >= 0) {
                  loc[i].showLocation(true);
-                 if (loc[i].marker) {
-                     loc[i].marker.setVisible(true);
-                 }
+                 
              } else {
                  loc[i].showLocation(false);
-                 if (loc[i].marker) {
-                     loc[i].marker.setVisible(false);
-                 }
              }
          }
      });
@@ -236,7 +232,7 @@
  /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
  function closeNav() {
      document.getElementById("mySidenav").style.width = "0";
-     //document.getElementById("main").style.marginLeft = "0";
+     // document.getElementById("main").style.marginLeft = "0";
  }
 
  function populateInfoWindow(marker, infowindow) {
@@ -265,25 +261,25 @@
          }).success(function(data) {
              // If data has a venues object set the first one to the var venue                
              var venue = data.response.hasOwnProperty("venues") ? data.response.venues[0] : '';
-             //if data has a url property, set it to var website
+             // if data has a url property, set it to var website
              var website = venue.hasOwnProperty("url") ? venue.url : '';
-             //if data has a contact property, set it to var contact
+             // if data has a contact property, set it to var contact
              var contact = venue.hasOwnProperty("contact") ? venue.contact : '';
-             //if data has a location property, set it to var loocation
+             // if data has a location property, set it to var loocation
              var location = venue.hasOwnProperty('location') ? venue.location : '';
-             //if contact has property formattedPhone, set it to var phone
+             // if contact has property formattedPhone, set it to var phone
              if (contact.hasOwnProperty('formattedPhone')) {
                  var phone = contact.formattedPhone || '';
              }
-             //if contact has property twitter, set it to var tweet
+             // if contact has property twitter, set it to var tweet
              if (contact.hasOwnProperty('twitter')) {
                  var tweet = contact.twitter || '';
              }
-            //if contact has property facebookUsername, set it to var fb
+            // if contact has property facebookUsername, set it to var fb
              if (contact.hasOwnProperty('facebookUsername')) {
                  var fb = contact.facebookUsername || '';
              }
-            //if location has a property of address, set it to var address
+            // if location has a property of address, set it to var address
              if (location.hasOwnProperty('address')) {
                  var address = location.address || '';
              }
@@ -292,8 +288,8 @@
                  '<br><center>Social Media: ' + '<br>' + 'www.twitter.com/' + tweet + '<br>' + 'www.facebook.com/' + fb  + '</center></p>' + '</div>');
 
          }).fail(function(e) {
-            //if data not, find set the content to show error message
-             infowindow.setContent('<h5>Foursquare data is not available.</h5>');
+            // if data not, find set the content to show error message
+             infowindow.setContent('<h5>Cannot find Foursquare data.</h5>');
 
          });
 
@@ -301,7 +297,7 @@
  }
 
  var initMap = function() {
-     //Create a new map 
+     // Create a new map 
      map = new google.maps.Map(document.getElementById('map'), {
          center: {
              lat: 38.5816,
@@ -342,11 +338,9 @@
          marker.addListener('mouseout', function() {
              this.setIcon(defaultIcon);
          });
-         // Push the marker to our array of markers.
-         //markers.push(marker);
          // Create an onclick event to open an infowindow at each marker.
          marker.addListener('click', function() {
-             //Add functionaility to animate markers
+             // Add functionaility to animate markers
              var self = this;
              self.setAnimation(google.maps.Animation.BOUNCE);
              setTimeout(function() {
