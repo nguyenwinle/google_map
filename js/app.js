@@ -208,9 +208,15 @@ var styles = [{
          for (var i = 0; i < loc.length; i++) {
              if (loc[i].title.toLowerCase().indexOf(value) >= 0) {
                  loc[i].showLocation(true);
+             if (loc[i].marker) {
+                    loc[i].marker.setVisible(true);
+                }
                  
              } else {
                  loc[i].showLocation(false);
+               if (loc[i].marker) {
+                    loc[i].marker.setVisible(false);
+                }
              }
          }
      });
@@ -268,24 +274,24 @@ var styles = [{
              // if data has a location property, set it to var loocation
              var location = venue.hasOwnProperty('location') ? venue.location : '';
              // if contact has property formattedPhone, set it to var phone
+             var phone = contact.formattedPhone || '';
              if (contact.hasOwnProperty('formattedPhone')) {
-                 var phone = contact.formattedPhone || '';
              }
              // if contact has property twitter, set it to var tweet
+             var tweet = contact.twitter || '';
              if (contact.hasOwnProperty('twitter')) {
-                 var tweet = contact.twitter || '';
              }
             // if contact has property facebookUsername, set it to var fb
+             var fb = contact.facebookUsername || '';
              if (contact.hasOwnProperty('facebookUsername')) {
-                 var fb = contact.facebookUsername || '';
              }
             // if location has a property of address, set it to var address
+             var address = location.address || '';
              if (location.hasOwnProperty('address')) {
-                 var address = location.address || '';
              }
 
              infowindow.setContent('<div>' + '<center><h3>' + '<a href="' + website + '" target="_blank">' + marker.title + '</a>' + '</h3></center>' + '<p>' + 'Address: ' + address + '<br>' + 'Phone: ' + phone +
-                 '<br><center>Social Media: ' + '<br>' + 'www.twitter.com/' + tweet + '<br>' + 'www.facebook.com/' + fb  + '</center></p>' + '</div>');
+                 '<br><center>Social Media: ' + '<br>' + 'www.twitter.com/' + tweet + '<br>' + 'www.facebook.com/' + fb + '</center></p>' + '</div>');
 
          }).fail(function(e) {
             // if data not, find set the content to show error message
@@ -307,6 +313,10 @@ var styles = [{
          styles: styles,
          mapTypeControl: false
      });
+
+     mapError = function() {
+      alert("Cannot load map!");
+     };
 
      var defaultIcon = makeMarkerIcon('9400D3');
      // Create a "highlighted location" marker color for when the user
@@ -350,7 +360,7 @@ var styles = [{
          });
 
      }
- }
+ };
 
  function makeMarkerIcon(markerColor) {
 
